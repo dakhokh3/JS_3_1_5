@@ -2,7 +2,6 @@ package com.example.SpringSecurityGB.service;
 
 import com.example.SpringSecurityGB.enity.User;
 import com.example.SpringSecurityGB.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,10 +12,9 @@ import javax.transaction.Transactional;
 @Service
 public class UserDetailsServiceCustom implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserDetailsServiceCustom(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

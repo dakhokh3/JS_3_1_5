@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ManagerController {
     private final UserService userService;
 
-    @Autowired
     public ManagerController(UserService userService) {
         this.userService = userService;
     }
