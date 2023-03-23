@@ -22,11 +22,25 @@ public class UserDetailsServiceCustom implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+//    @Override
+//    @Transactional
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = findByUsername(username);
+//        if (user == null) throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+//    }
+
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if (user == null) throw new UsernameNotFoundException(String.format("User '%s' not found", username));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = findByEmail(email);
+        if (user == null) throw new UsernameNotFoundException(String.format("User '%s' not found", email));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getAuthorities());
     }
+
+
 }

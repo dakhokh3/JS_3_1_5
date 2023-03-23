@@ -24,15 +24,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
+                //.antMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().successHandler(successUserHandler)
+                .formLogin().loginPage("/login")
+                .successHandler(successUserHandler)
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+                .csrf().disable();
     }
 
     @Bean

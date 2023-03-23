@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container-fluid" th:object="${user}">
+    <div class="p-4 mb-6 bg-dark text-white">
+        <p class="card-text" style="font-size: 15px; position: absolute; top: 10px">
+            <strong>
+                <td th:text="${user.getEmail()}"></td>
+            </strong>
+            with roles:
+        <td>
+            <th:block th:each="role : ${user.getRoles()}">
+                                            <span th:switch="${role.getName()}">
+                                             <span th:case="'ROLE_ADMIN'">ADMIN</span>
+                                               <span th:case="'ROLE_USER'">USER</span>
+                                                    </span>
+            </th:block>
+        </td>
+        </p>
+        <div class="p-5 mb-2 float-right">
+            <a href="/logout" style="color: darkgrey; position: absolute; top: 10px;font-size: 15px" class="card-link">Logout</a>
+        </div>
+    </div>
+</div>
+
+<!--<div class="container-fluid">-->
+<!--    <div class="row">-->
+<!--        <div class="col-md-2">-->
+
+<!--            <nav class="nav flex-column nav-pills nav-fill">-->
+<!--                <a class="nav-link active" href="#">Admin</a>-->
+<!--                <a class="nav-link" href="#">User</a>-->
+<!--        </div>-->
+<!--        <h2>Add new user</h2>-->
+<!--        <br>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="container-fluid">
+    <div class="row row-cols-2 text-black">
+        <!--LEFT-->
+        <div class="col-sm-2 bg-white">
+            <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" href="#">Admin</a>
+                <a class="nav-link" href="#">User</a>
+                <a class="nav-link active" href="/admin" sec:authorize="hasRole('ROLE_ADMIN')" role="tab"
+                   aria-controls="v-pills-home" aria-selected="true"
+                   th:if="${userAuthorized.hasRole('ROLE_ADMIN')}">Admin</a>
+                <a class="nav-link" href="/user" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false"
+                   th:if="${userAuthorized.hasRole('ROLE_USER')}">User</a>
+            </div>
+        </div>
+        <!--        RIGHT-->
+        <div class="col-10">
+            <div class="container-fluid">
+                <h1>Admin panel</h1>
+                <ul class="nav nav-tabs">
+                    <a class="nav-link " data-toggle="tab" th:href="@{/admin}">Users Table</a>
+                    <a class="nav-link active" data-toggle="tab" th:href="@{/admin/new}">New User</a>
+                </ul>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="m-1">
+                            <h3>Add new user</h3>
+                        </div>
+                    </div>
+                    <div class="card-body" align="center">
+                        <form align="center" class="row justify-content-md-center col-md-5"
+                              action="new" th:method="POST" th:object="${user}">
+                            <label for="username"><b>First name</b></label>
+                            <input th:name="username" value="" th:type="text" class="form-control" id="username"
+                                   required/>
+                            <br>
+                            <label for="lastName"><b>Last name</b></label>
+                            <input th:name="lastName" value="" th:type="text" class="form-control" id="lastName"
+                                   required/>
+                            <br>
+                            <label for="age"><b>Age</b></label>
+                            <input th:name="age" value="" th:type="number" class="form-control"
+                                   id="age"/>
+                            <br>
+                            <label for="email"><b>Email</b></label>
+                            <input th:name="email" value="" th:type="email" class="form-control" id="email"
+                                   required/>
+                            <br>
+                            <label for="password"><b>Password</b></label>
+                            <input th:name="password" value="" th:type="password" class="form-control"
+                                   id="password" required/>
+                            <br>
+                            <label for="role"><b>Role</b></label>
+                            <select id="role" th:field="*{userRoles}" multiple class="form-control form-control-sm" size="2" aria-label="size 2 select example">
+                                <option th:each="role:${roles}" th:value="${{role}}" th:text="${role.authority}"/>
+                            </select>
+                            <br>
+                            <button th:type="submit" class="btn btn-success"
+                                    value="Add new user">Add new user
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <div class="container-fluid">
+            <div class="col-md-2">
+                <div class="card-body" align="center">
+                    <form align="center" class="row justify-content-md-center col-md-5"
+                          action="new" th:method="POST" th:object="${user}">
+                        <label for="username"><b>First name</b></label>
+                        <input th:name="username" value="" th:type="text" class="form-control" id="username"
+                               required/>
+                        <br>
+                        <label for="lastName"><b>Last name</b></label>
+                        <input th:name="lastName" value="" th:type="text" class="form-control" id="lastName"
+                               required/>
+                        <br>
+                        <label for="age"><b>Age</b></label>
+                        <input th:name="age" value="" th:type="number" class="form-control"
+                               id="age"/>
+                        <br>
+                        <label for="email"><b>Email</b></label>
+                        <input th:name="email" value="" th:type="email" class="form-control" id="email"
+                               required/>
+                        <br>
+                        <label for="password"><b>Password</b></label>
+                        <input th:name="password" value="" th:type="password" class="form-control"
+                               id="password" required/>
+                        <br>
+                        <label for="role"><b>Role</b></label>
+                        <select id="role" th:field="*{userRoles}" multiple class="form-control form-control-sm" size="2" aria-label="size 2 select example">
+                            <option th:each="role:${roles}" th:value="${{role}}" th:text="${role.authority}"/>
+                        </select>
+                        <br>
+                        <button th:type="submit" class="btn btn-success"
+                                value="Add new user">Add new user
+                        </button>
+                    </form>
+                </div>
+
+                <div class="container">
+                    <form th:method="POST" th:action="@{/admin/saveUser}" th:object="${user}">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" th:field="*{username}" id="name"/>
+                            <!--        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">-->
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Password</label>
+                            <input type="text" th:field="*{password}" id="password"/>
+                            <!--        <input type="email" class="form-control" id="exampleFormControlInput2" placeholder="name@example.com">-->
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Email</label>
+                            <input type="text" th:field="*{email}" id="email"/>
+                            <!--        <input type="email" class="form-control" id="exampleFormControlInput3" placeholder="name@example.com">-->
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Role</label>
+                            <select multiple class="custom-select" size="2" id="rolesUser" name="roleList">
+                                <option th:each="role : ${rolesNew}" th:value="${role.id}">
+                                    <th:block th:text="${role.getName()}"></th:block>
+                                </option>
+                            </select>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <!--            <input type="text" th:field="*{roles}" id="role"/>-->
+                                <option>ADMIN</option>
+                                <option>USER</option>
+                                <option>MANAGER</option>
+                            </select>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                        <input type="button" value="Add new user"/>
+                    </form>
+                </div>
+                <!--<form th:method="POST" th:action="@{/admin/saveUser}" th:object="${user}">-->
+                <!--    <input type="hidden" th:field="*{id}">-->
+                <!--    <label for="name">Enter name: </label>-->
+                <!--    <input type="text" th:field="*{username}" id="name"/>-->
+                <!--    <label for="name">Enter password: </label>-->
+                <!--    <input type="text" th:field="*{password}" id="password"/>-->
+                <!--    <label for="name">Enter email: </label>-->
+                <!--    <input type="text" th:field="*{email}" id="email"/>-->
+                <!--    <label for="name">Enter role (id, where 1-User, 2-Admin, 3-Manager): </label>-->
+                <!--    <input type="text" th:field="*{roles}" id="role"/>-->
+                <!--    <br/>-->
+                <!--    <input type="submit" value="OK"/>-->
+                <!--</form>-->
+                <!--<input type="button" value="Logout" onclick="window.location.href = '/logout'" >-->
+
+</body>
+</html>

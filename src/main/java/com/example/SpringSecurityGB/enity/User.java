@@ -17,6 +17,13 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
+
+    private String firstName;
+
+    private String lastName;
+
+    private int age;
+
     @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -51,16 +58,20 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String username, String password, String email, Collection<Role> roles) {
+
+    public User(Long id, String username, String password, String email, String firstName, String lastName, int age, Collection<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
         this.roles = roles;
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -69,7 +80,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -78,7 +89,31 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return this.password;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return this.age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public void setPassword(String password) {
@@ -86,7 +121,7 @@ public class User implements UserDetails {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -94,10 +129,24 @@ public class User implements UserDetails {
     }
 
     public Collection<Role> getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", roles=" + roles +
+                '}';
     }
 }
