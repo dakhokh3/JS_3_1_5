@@ -21,7 +21,7 @@ public class UserDetailsServiceCustom implements UserDetailsService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
+    @Transactional
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }

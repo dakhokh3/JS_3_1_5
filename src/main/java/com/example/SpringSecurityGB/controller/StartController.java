@@ -1,28 +1,32 @@
 package com.example.SpringSecurityGB.controller;
 
-import com.example.SpringSecurityGB.enity.User;
 import com.example.SpringSecurityGB.service.UserDetailsServiceCustom;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 
-@RequestMapping("/user")
 @Controller
-public class UserController {
+public class StartController {
 
     private final UserDetailsServiceCustom userDetailsServiceCustom;
 
-    public UserController(UserDetailsServiceCustom userDetailsServiceCustom) {
+    public StartController(UserDetailsServiceCustom userDetailsServiceCustom) {
         this.userDetailsServiceCustom = userDetailsServiceCustom;
     }
 
-    @GetMapping()
+    @GetMapping("/admin")
+    public String getUsers(Model model, Principal principal) {
+        model.addAttribute("user", userDetailsServiceCustom.findByEmail(principal.getName()));
+        return "admin-page";
+    }
+
+    @GetMapping("/user")
     public String userInfo(Principal principal, Model model) {
-        User user = userDetailsServiceCustom.findByEmail(principal.getName());
-        model.addAttribute("authenticated_user", user);
+        model.addAttribute("authenticated_user", userDetailsServiceCustom.findByEmail(principal.getName()));
         return "user-page";
     }
+
+
 }
