@@ -1,6 +1,6 @@
 package com.example.SpringSecurityGB.config;
 
-import com.example.SpringSecurityGB.service.UserDetailsServiceCustom;
+import com.example.SpringSecurityGB.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,9 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
-    private final UserDetailsServiceCustom userDetailsServiceCustom;
+    private final UserService userDetailsServiceCustom;
 
-    public SecurityConfig(SuccessUserHandler successUserHandler, UserDetailsServiceCustom userDetailsServiceCustom) {
+    public SecurityConfig(SuccessUserHandler successUserHandler, UserService userDetailsServiceCustom) {
         this.successUserHandler = successUserHandler;
         this.userDetailsServiceCustom = userDetailsServiceCustom;
     }

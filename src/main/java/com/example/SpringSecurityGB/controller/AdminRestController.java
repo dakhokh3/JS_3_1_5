@@ -3,14 +3,11 @@ package com.example.SpringSecurityGB.controller;
 import com.example.SpringSecurityGB.enity.Role;
 import com.example.SpringSecurityGB.enity.User;
 import com.example.SpringSecurityGB.exception_handling.NoSuchUserException;
-import com.example.SpringSecurityGB.repository.RoleRepository;
-import com.example.SpringSecurityGB.service.UserDetailsServiceCustom;
 import com.example.SpringSecurityGB.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -21,14 +18,8 @@ public class AdminRestController {
 
     private final UserService userService;
 
-    private final UserDetailsServiceCustom serviceCustom;
-
-    private final RoleRepository roleRepository;
-
-    public AdminRestController(UserService userService, UserDetailsServiceCustom serviceCustom, RoleRepository roleRepository) {
+    public AdminRestController(UserService userService) {
         this.userService = userService;
-        this.serviceCustom = serviceCustom;
-        this.roleRepository = roleRepository;
     }
 
 
@@ -46,7 +37,7 @@ public class AdminRestController {
     @PutMapping("/admin/users")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         if (user.getRoles().isEmpty()) {
-            Set<Role> roles = (Set<Role>) serviceCustom.findByUsername(user.getUsername()).getRoles();
+            Set<Role> roles = (Set<Role>) userService.findByEmail(user.getUsername()).getRoles();
             user.setRoles(roles);
         }
         userService.saveUser(user);

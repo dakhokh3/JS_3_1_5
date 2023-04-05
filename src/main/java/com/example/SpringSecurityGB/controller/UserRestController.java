@@ -1,7 +1,7 @@
 package com.example.SpringSecurityGB.controller;
 
 import com.example.SpringSecurityGB.enity.User;
-import com.example.SpringSecurityGB.service.UserDetailsServiceCustom;
+import com.example.SpringSecurityGB.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +13,9 @@ import java.security.Principal;
 
 public class UserRestController {
 
-    private final UserDetailsServiceCustom userService;
+    private final UserService userService;
 
-    public UserRestController(UserDetailsServiceCustom userService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 
